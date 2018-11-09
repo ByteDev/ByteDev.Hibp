@@ -9,34 +9,34 @@ namespace ByteDev.Hibp
     /// </summary>
     public class HibpBreachResponse
     {
-        public string Name { get; internal set; }
+        public string Name { get; set; }
 
-        public string Title { get; internal set; }
+        public string Title { get; set; }
 
-        public string Domain { get; internal set; }
+        public string Domain { get; set; }
 
-        public DateTime BreachDate { get; internal set; }
+        public DateTime BreachDate { get; set; }
 
-        public DateTime AddedDate { get; internal set; }
+        public DateTime AddedDate { get; set; }
 
-        public DateTime ModifiedDate { get; internal set; }
+        public DateTime ModifiedDate { get; set; }
 
-        public long PwnCount { get; internal set; }
+        public long PwnCount { get; set; }
 
-        public string Description { get; internal set; }
+        public string Description { get; set; }
 
-        public string LogoType { get; internal set; }
+        public string LogoType { get; set; }
 
-        public bool IsVerified { get; internal set; }
+        public bool IsVerified { get; set; }
 
-        public bool IsFabricated { get; internal set; }
+        public bool IsFabricated { get; set; }
 
-        public bool IsSensitive { get; internal set; }
+        public bool IsSensitive { get; set; }
 
-        public bool IsRetired { get; internal set; }
+        public bool IsRetired { get; set; }
 
-        public bool IsSpamList { get; internal set; }
+        public bool IsSpamList { get; set; }
 
-        public IEnumerable<string> DataClasses { get; internal set; }
+        public IEnumerable<string> DataClasses { get; set; }
     }
 }

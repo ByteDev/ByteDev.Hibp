@@ -1,8 +1,18 @@
+[![NuGet Package](https://img.shields.io/nuget/v/ByteDev.Hibp.svg)](https://www.nuget.org/packages/ByteDev.Hibp)
+
 # ByteDev.Hibp
 
 Provides simple client to talk to the "Have I been Pwned?" API as hosted by Troy Hunt.
 
+## Installation
+
 ByteDev.Hibp has been written as a .NET Standard 2.0 library, so you can consume it from a .NET Core or .NET Framework 4.6.1 (or greater) application.
+
+ByteDev.Hibp is hosted as a package on nuget.org.  To install from the Package Manager Console in Visual Studio run:
+
+`Install-Package ByteDev.Hibp`
+
+Further details can be found on the [nuget page](https://www.nuget.org/packages/ByteDev.Hibp/).
 
 ## Code
 

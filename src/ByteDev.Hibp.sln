@@ -14,6 +14,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{49753ACD-6
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{A4B64F75-AC4C-4A20-A841-5535F11EA961}"
+	ProjectSection(SolutionItems) = preProject
+		..\build\build.cake = ..\build\build.cake
+		..\build\ByteDev.Utilities.cake = ..\build\ByteDev.Utilities.cake
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
