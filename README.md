@@ -24,7 +24,7 @@ Integration tests are also provided in the solution.
 
 ## Usage
 
-The `HibpClient` clas currently has a single (overloaded) method:
+The `HibpClient` class currently has a single (overloaded) method:
 
 - **GetAccountBreachesAsync(string emailAddress)**
 - **GetAccountBreachesAsync(string emailAddress, HibpRequestOptions options)**
