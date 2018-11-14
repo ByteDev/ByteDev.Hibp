@@ -27,14 +27,14 @@ string GetNuGetVersion()
 
 void CleanObjDirectories()
 {
-	var objSrcDirs = GetDirectories("./src/**/obj");
+	var objSrcDirs = GetDirectories("../src/**/obj");
 	
 	CleanDirectories(objSrcDirs);
 }
 
 void CleanBinDirectories()
 {	
-	var binSrcDirs = GetDirectories("./src/**/bin");
+	var binSrcDirs = GetDirectories("../src/**/bin");
 
 	CleanDirectories(binSrcDirs);
 }
