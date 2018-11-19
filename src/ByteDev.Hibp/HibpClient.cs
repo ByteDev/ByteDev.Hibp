@@ -9,10 +9,12 @@ namespace ByteDev.Hibp
 {
     public class HibpClient : IHibpClient
     {
-        private static readonly HttpClient HttpClient = new HttpClient();
+        private static readonly HttpClient HttpClient;
 
         static HibpClient()
         {
+            HttpClient = new HttpClient();
+
             HttpClient.DefaultRequestHeaders.Add("User-Agent", "ByteDev-HibpClient");
             HttpClient.DefaultRequestHeaders.Add("Accept", "application/vnd.haveibeenpwned.v2+json");
         }
@@ -45,12 +47,16 @@ namespace ByteDev.Hibp
                 return HibpResponse.CreateIsNotPwned();
             }
 
-            throw new HibpClientException(CreateUnhandledStatusCodeMessage(response));
+            var message = await CreateUnhandledStatusCodeMessage(response);
+
+            throw new HibpClientException(message);
         }
 
-        private static string CreateUnhandledStatusCodeMessage(HttpResponseMessage response)
+        private static async Task<string> CreateUnhandledStatusCodeMessage(HttpResponseMessage response)
         {
-            return $"Unhandled StatusCode: '{(int)response.StatusCode} {response.StatusCode}' returned.";
+            var body = await response.Content.ReadAsStringAsync();
+
+            return $"Unhandled StatusCode: '{(int)response.StatusCode} {response.StatusCode}' returned.  Response body:\n{body}";
         }
     }
 }
