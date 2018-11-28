@@ -1,3 +1,4 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/github/bytedev/ByteDev.Hibp?branch=master&svg=true)](https://ci.appveyor.com/project/bytedev/ByteDev-Hibp/branch/master)
 [![NuGet Package](https://img.shields.io/nuget/v/ByteDev.Hibp.svg)](https://www.nuget.org/packages/ByteDev.Hibp)
 
 # ByteDev.Hibp
