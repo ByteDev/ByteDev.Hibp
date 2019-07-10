@@ -10,12 +10,48 @@ namespace ByteDev.Hibp.IntTests
         private const string EmailAddressPwned = @"johnsmith@gmail.com";
         private const string EmailAddressNotPwned = @"djs834sskldi4999dspo@gmail.com";
 
+        private const string DomainBreached = "apollo.io";
+        private const string DomainNotBreached = "google.com";
+
         private HibpClient _sut;
 
         [SetUp]
         public void SetUp()
         {
             _sut = new HibpClient();
+        }
+
+        [TestFixture]
+        public class GetBreachedSitesAsync : HibpClientTests
+        {
+            [Test]
+            public async Task WhenNoDomainFilter_ThenReturnAllSites()
+            {
+                const int currentTotalSiteBreaches = 369;       // As of 10/07/2019 there were 369 site breaches
+
+                var result = await _sut.GetBreachedSitesAsync();
+                
+                Assert.That(result.Breaches.Count(), Is.GreaterThanOrEqualTo(currentTotalSiteBreaches));   
+                Assert.That(result.IsPwned, Is.True);
+            }
+
+            [Test]
+            public async Task WhenDomainIsBreached_ThenReturnSiteBreach()
+            {
+                var result = await _sut.GetBreachedSitesAsync(DomainBreached);
+
+                Assert.That(result.Breaches.Single().Domain, Is.EqualTo(DomainBreached));
+                Assert.That(result.IsPwned, Is.True);
+            }
+
+            [Test]
+            public async Task WhenDomainIsNotBreached_ThenReturnNoBreaches()
+            {
+                var result = await _sut.GetBreachedSitesAsync(DomainNotBreached);
+
+                Assert.That(result.Breaches, Is.Empty);
+                Assert.That(result.IsPwned, Is.False);
+            }
         }
 
         [TestFixture]
@@ -57,13 +93,11 @@ namespace ByteDev.Hibp.IntTests
             }
 
             [Test]
-            public async Task WhenEmailAddressPwned_AndFilterByDomain_ThenReturnOnlyDomainBreaches()
+            public async Task WhenEmailAddressPwned_AndFilterByDomain_ThenReturnOnlyDomainBreach()
             {
-                const string domain = "adobe.com";
+                var result = await _sut.GetHasBeenPwnedAsync(EmailAddressPwned, new HibpRequestOptions { FilterByDomain = DomainBreached });
 
-                var result = await _sut.GetHasBeenPwnedAsync(EmailAddressPwned, new HibpRequestOptions { FilterByDomain = domain });
-
-                Assert.That(result.Breaches.Single().Domain, Is.EqualTo(domain));
+                Assert.That(result.Breaches.Single().Domain, Is.EqualTo(DomainBreached));
             }
         }
     }

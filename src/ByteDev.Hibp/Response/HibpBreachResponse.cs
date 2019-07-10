@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ByteDev.Hibp
+namespace ByteDev.Hibp.Response
 {
     /// <summary>
     /// Describes a single breach incident.

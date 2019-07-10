@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace ByteDev.Hibp
+namespace ByteDev.Hibp.Response
 {
     public class HibpResponse
     {
@@ -22,7 +22,7 @@ namespace ByteDev.Hibp
         {
             return new HibpResponse
             {
-                IsPwned = true,
+                IsPwned = hibpBreachResponses.Any(),
                 Breaches = hibpBreachResponses
             };
         }
