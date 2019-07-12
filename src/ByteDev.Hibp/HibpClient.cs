@@ -1,29 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using ByteDev.Hibp.Response;
-using Newtonsoft.Json;
 
 namespace ByteDev.Hibp
 {
     public class HibpClient : IHibpClient
     {
-        private static readonly HttpClient HttpClient;
-
+        private readonly HttpClient _httpClient;
         private readonly HibpUriFactory _uriFactory;
 
-        static HibpClient()
+        public HibpClient(HttpClient httpClient)
         {
-            HttpClient = new HttpClient();
+            _httpClient = httpClient;
 
-            HttpClient.DefaultRequestHeaders.Add("User-Agent", "ByteDev-HibpClient");
-            HttpClient.DefaultRequestHeaders.Add("Accept", "application/vnd.haveibeenpwned.v2+json");
-        }
+            AddDefaultHeaders();
 
-        public HibpClient()
-        {
             _uriFactory = new HibpUriFactory();
         }
 
@@ -34,46 +26,24 @@ namespace ByteDev.Hibp
 
             var uri = _uriFactory.CreateBreachedAccountUri(emailAddress, options);   
 
-            var response = await HttpClient.GetAsync(uri);
+            var response = await _httpClient.GetAsync(uri);
 
-            return await CreateHibpResponseAsync(response);
+            return await HibpResponseFactory.CreateAsync(response);
         }
 
         public async Task<HibpResponse> GetBreachedSitesAsync(string domain = null)
         {
             var uri = _uriFactory.CreateBreachedSiteUri(domain);
 
-            var response = await HttpClient.GetAsync(uri);
+            var response = await _httpClient.GetAsync(uri);
 
-            return await CreateHibpResponseAsync(response);
+            return await HibpResponseFactory.CreateAsync(response);
         }
 
-        private static async Task<HibpResponse> CreateHibpResponseAsync(HttpResponseMessage response)
+        private void AddDefaultHeaders()
         {
-            switch (response.StatusCode)
-            {
-                case HttpStatusCode.OK:
-                {
-                    var json = await response.Content.ReadAsStringAsync();
-
-                    var breaches = JsonConvert.DeserializeObject<IEnumerable<HibpBreachResponse>>(json);
-
-                    return HibpResponse.CreateIsPwned(breaches);
-                }
-
-                case HttpStatusCode.NotFound:
-                    return HibpResponse.CreateIsNotPwned();
-
-                default:
-                    throw new HibpClientException(await CreateUnhandledStatusCodeMessageAsync(response));
-            }
-        }
-        
-        private static async Task<string> CreateUnhandledStatusCodeMessageAsync(HttpResponseMessage response)
-        {
-            var body = await response.Content.ReadAsStringAsync();
-
-            return $"Unhandled StatusCode: '{(int)response.StatusCode} {response.StatusCode}' returned.  Response body:\n{body}";
+            _httpClient.DefaultRequestHeaders.Add("User-Agent", "ByteDev-HibpClient");
+            _httpClient.DefaultRequestHeaders.Add("Accept", "application/vnd.haveibeenpwned.v2+json");
         }
     }
 }
