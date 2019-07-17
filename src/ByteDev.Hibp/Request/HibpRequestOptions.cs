@@ -1,4 +1,4 @@
-﻿namespace ByteDev.Hibp
+﻿namespace ByteDev.Hibp.Request
 {
     public class HibpRequestOptions
     {

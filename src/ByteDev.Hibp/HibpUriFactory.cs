@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using ByteDev.Hibp.Request;
 
 namespace ByteDev.Hibp
 {
@@ -7,11 +8,12 @@ namespace ByteDev.Hibp
     {
         private const string BaseUrl = "https://haveibeenpwned.com/api/";
 
-        public Uri CreateBreachedAccountUri(string emailAddress, HibpRequestOptions options = null)
+        public static Uri CreateBreachedAccountUri(string emailAddress, HibpRequestOptions options = null)
         {
-            var urlEncodedEmailAddress = WebUtility.UrlEncode(emailAddress);
+            if (string.IsNullOrEmpty(emailAddress))
+                throw new ArgumentException("Email address was null or empty.", nameof(emailAddress));
 
-            var uri = new Uri(BaseUrl + UriServicePath.BreachedAccount + "/" + urlEncodedEmailAddress);
+            var uri = new Uri(BaseUrl + UriServicePath.BreachedAccount + "/" + WebUtility.UrlEncode(emailAddress));
 
             if (options != null)
             {
@@ -23,9 +25,9 @@ namespace ByteDev.Hibp
             return uri;
         }
         
-        public Uri CreateBreachedSiteUri(string domain)
+        public static Uri CreateBreachedSiteUri(string domain)
         {
-            var uri = new Uri(BaseUrl + UriServicePath.BreachedSite);
+            var uri = new Uri(BaseUrl + UriServicePath.Breaches);
 
             if (!string.IsNullOrEmpty(domain))
             {
@@ -33,6 +35,27 @@ namespace ByteDev.Hibp
             }
 
             return uri;
+        }
+
+        public static Uri CreateBreachSiteByNameUri(string breachName)
+        {
+            if (string.IsNullOrEmpty(breachName))
+                throw new ArgumentException("Breach name was null or empty.", nameof(breachName));
+
+            return new Uri(BaseUrl + UriServicePath.Breach + "/" + breachName);
+        }
+
+        public static Uri CreateDataClassesUri()
+        {
+            return new Uri(BaseUrl + UriServicePath.DataClasses);
+        }
+
+        public static Uri CreateAccountPastesUri(string emailAddress)
+        {
+            if (string.IsNullOrEmpty(emailAddress))
+                throw new ArgumentException("Email address was null or empty.", nameof(emailAddress));
+
+            return new Uri(BaseUrl + UriServicePath.PasteAccount + "/" + WebUtility.UrlEncode(emailAddress));
         }
     }
 }

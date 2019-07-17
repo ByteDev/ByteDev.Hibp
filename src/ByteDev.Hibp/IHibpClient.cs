@@ -1,12 +1,20 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using ByteDev.Hibp.Request;
 using ByteDev.Hibp.Response;
 
 namespace ByteDev.Hibp
 {
     public interface IHibpClient
     {
-        Task<HibpResponse> GetHasBeenPwnedAsync(string emailAddress, HibpRequestOptions options = null);
+        Task<IEnumerable<HibpBreachResponse>> GetAccountBreachesAsync(string emailAddress, HibpRequestOptions options = null);
 
-        Task<HibpResponse> GetBreachedSitesAsync(string domain = null);
+        Task<IEnumerable<HibpBreachResponse>> GetBreachedSitesAsync(string domain = null);
+
+        Task<HibpBreachResponse> GetBreachSiteByNameAsync(string breachName);
+
+        Task<IEnumerable<string>> GetDataClassesAsync();
+
+        Task<IEnumerable<HibpPasteResponse>> GetAccountPastesAsync(string emailAddress);
     }
 }
