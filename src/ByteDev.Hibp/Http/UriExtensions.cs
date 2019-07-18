@@ -1,7 +1,7 @@
 ﻿using System;
 using ByteDev.Common;
 
-namespace ByteDev.Hibp
+namespace ByteDev.Hibp.Http
 {
     internal static class UriExtensions
     {

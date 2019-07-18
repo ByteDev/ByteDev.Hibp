@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace ByteDev.Hibp
+namespace ByteDev.Hibp.Http
 {
     internal static class HttpResponseMessageExtensions
     {

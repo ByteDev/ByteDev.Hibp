@@ -4,8 +4,8 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>Paul Stanley</Authors>
     <Company />
-    <PackageTags>hibp pwned email emailaddress client</PackageTags>
-    <Description>Provides simple client to talk to the Have I been Pwned API</Description>
+    <PackageTags>hibp pwned email emailaddress client httpclient account</PackageTags>
+    <Description>.NET Standard library to help communicate with the "Have I been Pwned?" API as hosted by Troy Hunt.</Description>
   </PropertyGroup>
 
   <ItemGroup>

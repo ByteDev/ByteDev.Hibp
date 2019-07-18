@@ -25,20 +25,22 @@ Integration tests are also provided in the solution.
 
 ## Usage
 
-The `HibpClient` class currently has a single (overloaded) method:
+The `HibpClient` class currently has a number of public methods:
 
-- **GetAccountBreachesAsync(string emailAddress)**
 - **GetAccountBreachesAsync(string emailAddress, HibpRequestOptions options)**
+- **GetBreachedSitesAsync(string domain = null)**
+- **GetBreachSiteByNameAsync(string breachName)**
+- **GetDataClassesAsync()**
+- **GetAccountPastesAsync(string emailAddress)**
 
 ### Example
 
 ```c#
-var client = new HibpClient();
+var client = new HibpClient(new HttpClient());
 
-var result = await client.GetHasBeenPwnedAsync("johnsmith@gmail.com");
+var result = await client.GetAccountBreachesAsync("johnsmith@gmail.com");
 
-Console.WriteLine($"Is account pwned?: {result.IsPwned}");
-Console.WriteLine($"Number of breaches: {result.Breaches.Count()}");
+Console.WriteLine($"Number of breaches: {result.Count()}");
 ```
 
 

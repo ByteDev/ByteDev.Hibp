@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using ByteDev.Hibp.Http;
 using ByteDev.Hibp.Request;
 
 namespace ByteDev.Hibp
