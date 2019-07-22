@@ -27,7 +27,7 @@ Integration tests are also provided in the solution.
 
 The `HibpClient` class currently has a number of public methods:
 
-- **GetAccountBreachesAsync(string emailAddress, HibpRequestOptions options)**
+- **GetAccountBreachesAsync(string emailAddress, HibpRequestOptions options = null)**
 - **GetBreachedSitesAsync(string domain = null)**
 - **GetBreachSiteByNameAsync(string breachName)**
 - **GetDataClassesAsync()**

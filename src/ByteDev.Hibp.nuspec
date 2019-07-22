@@ -9,7 +9,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>.NET Standard library to help communicate with the "Have I been Pwned?" API as hosted by Troy Hunt.</description>
     <copyright>Copyright 2019</copyright>
-    <tags>hibp pwned email emailaddress client httpclient account</tags>
+    <tags>hibp haveibeenpwned have i been pwned troy hunt email emailaddress client</tags>
 	<iconUrl>https://raw.githubusercontent.com/bytedev/ByteDev.Hibp/master/images/icon.png</iconUrl>
   </metadata>
   <files>
