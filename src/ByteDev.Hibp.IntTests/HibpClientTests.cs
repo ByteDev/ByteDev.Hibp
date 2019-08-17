@@ -20,7 +20,7 @@ namespace ByteDev.Hibp.IntTests
         private const string BreachNameExists = "000webhost";
         private const string BreachNameDoesNotExists = "breachDoesNotExist";
 
-        private HibpClient _sut;
+        private IHibpClient _sut;
 
         [SetUp]
         public void SetUp()
