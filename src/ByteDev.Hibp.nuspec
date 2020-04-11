@@ -12,6 +12,7 @@
     <tags>hibp haveibeenpwned have i been pwned troy hunt email emailaddress client</tags>
 	<iconUrl>https://raw.githubusercontent.com/bytedev/ByteDev.Hibp/master/images/icon.png</iconUrl>
 	<dependencies>
+		<group targetFramework=".NETStandard2.0" />
 		<dependency id="Newtonsoft.Json" version="11.0.2" />
 		<dependency id="ByteDev.Common" version="5.0.0" />
 	</dependencies>
