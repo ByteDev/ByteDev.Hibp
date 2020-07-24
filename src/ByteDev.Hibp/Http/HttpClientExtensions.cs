@@ -5,6 +5,14 @@ namespace ByteDev.Hibp.Http
 {
     internal static class HttpClientExtensions
     {
+        public static void AddApiKeyHeader(this HttpClient source, string apiKey)
+        {
+            if (string.IsNullOrEmpty(apiKey))
+                return;
+
+            source.DefaultRequestHeaders.Add("hibp-api-key", apiKey);
+        }
+
         public static void AddRequestHeaderUserAgent(this HttpClient source)
         {
             if(source.DefaultRequestHeaders.UserAgent.Any())

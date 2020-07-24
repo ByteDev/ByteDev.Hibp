@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>ByteDev.Hibp</id>
+    <title>ByteDev.Hibp</title>
+    <version>0.0.1</version>
+    <authors>Paul Stanley</authors>
+    <owners>Paul Stanley</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>.NET Standard library to help communicate with the "Have I been Pwned?" API as hosted by Troy Hunt.</description>
+    <copyright>Copyright 2019</copyright>
+    <tags>hibp haveibeenpwned have i been pwned troy hunt email emailaddress client</tags>
+    <projectUrl>https://github.com/ByteDev/ByteDev.Hibp</projectUrl>
+    <icon>images\icon.png</icon>
+    <license type="file">LICENSE</license>	
+	  <dependencies>
+		  <group targetFramework=".NETStandard2.0">
+        <dependency id="Newtonsoft.Json" version="11.0.2" />
+        <dependency id="ByteDev.Common" version="7.0.0" />
+      </group>
+	  </dependencies>
+  </metadata>
+  <files>
+    <file src="..\src\ByteDev.Hibp\bin\Release\netstandard2.0\ByteDev.Hibp.dll" target="lib\netstandard2.0" />
+    <file src="..\src\ByteDev.Hibp\bin\Release\netstandard2.0\ByteDev.Hibp.xml" target="lib\netstandard2.0" />
+    <file src="..\images\icon.png" target="images\" />
+    <file src="..\LICENSE*" target="" />
+  </files>
+</package>

@@ -1,30 +1,34 @@
-#addin nuget:?package=Cake.Incubator&version=3.0.0
-#tool "nuget:?package=NUnit.Runners&version=2.6.4"
-#tool "nuget:?package=GitVersion.CommandLine"
+#addin "nuget:?package=Cake.Incubator&version=5.1.0"
+#tool "nuget:?package=NUnit.ConsoleRunner&version=3.11.1"
+#tool "nuget:?package=GitVersion.CommandLine&version=5.2.4"
 #load "ByteDev.Utilities.cake"
+
+var solutionName = "ByteDev.Hibp";
+var projName = "ByteDev.Hibp";
+
+var solutionFilePath = "../" + solutionName + ".sln";
+var nuspecFilePath = projName + ".nuspec";
 
 var nugetSources = new[] {"https://api.nuget.org/v3/index.json"};
 
 var target = Argument("target", "Default");
 
-var solutionFilePath = "../src/ByteDev.Hibp.sln";
-
 var artifactsDirectory = Directory("../artifacts");
 var nugetDirectory = artifactsDirectory + Directory("NuGet");
-	
+
 var configuration = GetBuildConfiguration();
-	
+
 Information("Configurtion: " + configuration);
 
 
 Task("Clean")
     .Does(() =>
-{
-    CleanDirectory(artifactsDirectory);
-
-	CleanBinDirectories();
-	CleanObjDirectories();
-});
+	{
+		CleanDirectory(artifactsDirectory);
+	
+		CleanBinDirectories();
+		CleanObjDirectories();
+	});
 
 Task("Restore")
     .IsDependentOn("Clean")
@@ -63,21 +67,8 @@ Task("UnitTests")
 		DotNetCoreUnitTests(settings);
 	});
 	
-Task("IntegrationTests")
-    .IsDependentOn("UnitTests")
-    .Does(() =>
-	{
-		var settings = new DotNetCoreTestSettings()
-		{
-			Configuration = configuration,
-			NoBuild = true
-		};
-
-		DotNetCoreIntTests(settings);
-	});
-	
 Task("CreateNuGetPackages")
-    .IsDependentOn("IntegrationTests")
+    .IsDependentOn("UnitTests")
     .Does(() =>
     {
 		var nugetVersion = GetNuGetVersion();
@@ -88,7 +79,7 @@ Task("CreateNuGetPackages")
 			OutputDirectory = nugetDirectory
 		};
                 
-		NuGetPack("../src/ByteDev.Hibp.nuspec", nugetSettings);
+		NuGetPack(nuspecFilePath, nugetSettings);
     });
 
    

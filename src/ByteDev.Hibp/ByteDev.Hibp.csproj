@@ -2,14 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Authors>Paul Stanley</Authors>
-    <Company />
-    <PackageTags>hibp haveibeenpwned have i been pwned troy hunt email emailaddress client</PackageTags>
-    <Description>.NET Standard library to help communicate with the "Have I been Pwned?" API as hosted by Troy Hunt.</Description>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ByteDev.Common" Version="5.0.0" />
+    <PackageReference Include="ByteDev.Common" Version="7.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
 

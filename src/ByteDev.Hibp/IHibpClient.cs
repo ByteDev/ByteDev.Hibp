@@ -15,7 +15,7 @@ namespace ByteDev.Hibp
         /// <param name="options">Request options.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Returned breaches.</returns>
-        Task<IEnumerable<HibpBreachResponse>> GetAccountBreachesAsync(string emailAddress, HibpRequestOptions options = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<IEnumerable<HibpBreachResponse>> GetAccountBreachesAsync(string emailAddress, HibpRequestOptions options = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Returns the details of each of breach in the system.
@@ -24,7 +24,7 @@ namespace ByteDev.Hibp
         /// <param name="domain">Filters the result set to only breaches against the domain specified. It is possible that one site (and consequently domain), is compromised on multiple occasions.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Returned breaches.</returns>
-        Task<IEnumerable<HibpBreachResponse>> GetBreachedSitesAsync(string domain = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<IEnumerable<HibpBreachResponse>> GetBreachedSitesAsync(string domain = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Retrieve a single breach by the breach "breachName".
@@ -33,7 +33,7 @@ namespace ByteDev.Hibp
         /// <param name="breachName">Breach breachName to filter on.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Returned breach.</returns>
-        Task<HibpBreachResponse> GetBreachSiteByNameAsync(string breachName, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HibpBreachResponse> GetBreachSiteByNameAsync(string breachName, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Retrieve all data classes. A data class is an attribute of a record compromised in a breach.
@@ -43,7 +43,7 @@ namespace ByteDev.Hibp
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Returned data classes.</returns>
-        Task<IEnumerable<string>> GetDataClassesAsync(CancellationToken cancellationToken = default(CancellationToken));
+        Task<IEnumerable<string>> GetDataClassesAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Retrieves all pastes for an account. Unlike searching for breaches, usernames that are not email addresses
@@ -52,6 +52,6 @@ namespace ByteDev.Hibp
         /// <param name="emailAddress">Account email address to filter on.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Returned account's pastes.</returns>
-        Task<IEnumerable<HibpPasteResponse>> GetAccountPastesAsync(string emailAddress, CancellationToken cancellationToken = default(CancellationToken));
+        Task<IEnumerable<HibpPasteResponse>> GetAccountPastesAsync(string emailAddress, CancellationToken cancellationToken = default);
     }
 }

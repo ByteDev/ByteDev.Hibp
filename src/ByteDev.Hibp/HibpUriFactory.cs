@@ -7,7 +7,7 @@ namespace ByteDev.Hibp
 {
     internal class HibpUriFactory
     {
-        private const string BaseUrl = "https://haveibeenpwned.com/api/";
+        private const string BaseUrl = "https://haveibeenpwned.com/api/v3/";
 
         public static Uri CreateBreachedAccountUri(string emailAddress, HibpRequestOptions options = null)
         {

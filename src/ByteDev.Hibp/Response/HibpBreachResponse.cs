@@ -5,8 +5,10 @@ namespace ByteDev.Hibp.Response
 {
     /// <summary>
     /// Describes a single breach incident.
-    /// See https://haveibeenpwned.com/API/v2#BreachModel for more information.
     /// </summary>
+    /// <remarks>
+    /// See https://haveibeenpwned.com/API/v3#BreachModel for more information.
+    /// </remarks>
     public class HibpBreachResponse
     {
         /// <summary>

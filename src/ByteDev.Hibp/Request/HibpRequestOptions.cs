@@ -1,5 +1,8 @@
 ﻿namespace ByteDev.Hibp.Request
 {
+    /// <summary>
+    /// Represents request options to the HIBP API.
+    /// </summary>
     public class HibpRequestOptions
     {
         /// <summary>
@@ -8,7 +11,7 @@
         public bool TruncateResponse { get; set; }
 
         /// <summary>
-        /// Returns breaches that have been flagged as "unverified". By default, only verified breaches are returned.
+        /// Returns breaches that have been flagged as "unverified". By default, both verified and unverified breaches are returned when performing a search.
         /// </summary>
         public bool IncludeUnverified { get; set; }
 

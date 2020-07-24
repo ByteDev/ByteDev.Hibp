@@ -1,5 +1,6 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/github/bytedev/ByteDev.Hibp?branch=master&svg=true)](https://ci.appveyor.com/project/bytedev/ByteDev-Hibp/branch/master)
 [![NuGet Package](https://img.shields.io/nuget/v/ByteDev.Hibp.svg)](https://www.nuget.org/packages/ByteDev.Hibp)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/ByteDev/ByteDev.Hibp/blob/master/LICENSE)
 
 # ByteDev.Hibp
 
@@ -15,14 +16,6 @@ ByteDev.Hibp is hosted as a package on nuget.org.  To install from the Package M
 
 Further details can be found on the [nuget page](https://www.nuget.org/packages/ByteDev.Hibp/).
 
-## Code
-
-The repo can be cloned from git bash:
-
-`git clone https://github.com/ByteDev/ByteDev.Hibp`
-
-Integration tests are also provided in the solution.
-
 ## Usage
 
 The `HibpClient` class currently has a number of public methods:
@@ -35,18 +28,18 @@ The `HibpClient` class currently has a number of public methods:
 
 ### Example
 
-```c#
-var client = new HibpClient(new HttpClient());
+```csharp
+IHibpClient client = new HibpClient(new HttpClient());
 
 var result = await client.GetAccountBreachesAsync("johnsmith@gmail.com");
 
 Console.WriteLine($"Number of breaches: {result.Count()}");
 ```
 
-
 ## Further Information
 
 See the following for more general information:
 
 - [HIBP Website](https://haveibeenpwned.com/)
-- [HIBP API Documentation](https://haveibeenpwned.com/API/v2)
+- [HIBP API Documentation](https://haveibeenpwned.com/API/v3)
+- [HIBP API Keys](https://haveibeenpwned.com/API/Key)
