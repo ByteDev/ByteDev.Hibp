@@ -29,7 +29,12 @@ The `HibpClient` class currently has a number of public methods:
 ### Example
 
 ```csharp
-IHibpClient client = new HibpClient(new HttpClient());
+// Valid API key is required for methods: 
+// - GetAccountBreachesAsync
+// - GetAccountPastesAsync
+const string apiKey = "someKey";
+
+IHibpClient client = new HibpClient(new HttpClient(), apiKey);
 
 var result = await client.GetAccountBreachesAsync("johnsmith@gmail.com");
 
