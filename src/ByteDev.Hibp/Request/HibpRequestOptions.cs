@@ -6,14 +6,15 @@
     public class HibpRequestOptions
     {
         /// <summary>
-        /// Returns only the name of the breach.
+        /// Returns only the name of the breach. True by default.
         /// </summary>
-        public bool TruncateResponse { get; set; }
+        public bool TruncateResponse { get; set; } = true;
 
         /// <summary>
-        /// Returns breaches that have been flagged as "unverified". By default, both verified and unverified breaches are returned when performing a search.
+        /// Returns breaches that have been flagged as "unverified". True by default
+        /// (both verified and unverified breaches are returned when performing a search).
         /// </summary>
-        public bool IncludeUnverified { get; set; }
+        public bool IncludeUnverified { get; set; } = true;
 
         /// <summary>
         /// Filters the result set to only breaches against the domain specified.

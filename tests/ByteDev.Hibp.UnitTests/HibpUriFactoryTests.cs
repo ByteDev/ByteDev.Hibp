@@ -40,11 +40,16 @@ namespace ByteDev.Hibp.UnitTests
             }
 
             [Test]
-            public void WhenAllOptionsEnabled_ThenReturnUri()
+            public void WhenAllOptionsSetToNonDefault_ThenReturnUri()
             {
-                var result = Act(EmailAddress, new HibpRequestOptions {IncludeUnverified = true, TruncateResponse = true, FilterByDomain = "yahoo.com"});
+                var result = Act(EmailAddress, new HibpRequestOptions
+                {
+                    IncludeUnverified = false, 
+                    TruncateResponse = false, 
+                    FilterByDomain = "yahoo.com"
+                });
 
-                Assert.That(result.ToString(), Is.EqualTo(ExpectedUrl() + "?truncateResponse=true&includeUnverified=true&domain=yahoo.com"));
+                Assert.That(result.ToString(), Is.EqualTo(ExpectedUrl() + "?truncateResponse=false&includeUnverified=false&domain=yahoo.com"));
             }
 
             private string ExpectedUrl()

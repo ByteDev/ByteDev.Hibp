@@ -1,5 +1,5 @@
 ﻿using System;
-using ByteDev.Common;
+using ByteDev.ResourceIdentifier;
 
 namespace ByteDev.Hibp.Http
 {
@@ -7,16 +7,16 @@ namespace ByteDev.Hibp.Http
     {
         public static Uri AddTruncateResponse(this Uri source, bool truncateRespnse)
         {
-            if(truncateRespnse)
-                return source.AddOrModifyQueryStringParam("truncateResponse", "true");
+            if(!truncateRespnse)
+                return source.AddOrUpdateQueryParam("truncateResponse", "false");
 
             return source;
         }
 
         public static Uri AddIncludeUnverified(this Uri source, bool includeUnverified)
         {
-            if (includeUnverified)
-                return source.AddOrModifyQueryStringParam("includeUnverified", "true");
+            if (!includeUnverified)
+                return source.AddOrUpdateQueryParam("includeUnverified", "false");
 
             return source;
         }
@@ -24,7 +24,7 @@ namespace ByteDev.Hibp.Http
         public static Uri AddFilterByDomain(this Uri source, string domain)
         {
             if (!string.IsNullOrEmpty(domain))
-                source = source.AddOrModifyQueryStringParam("domain", domain);
+                source = source.AddOrUpdateQueryParam("domain", domain);
 
             return source;
         }

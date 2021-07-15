@@ -16,7 +16,7 @@
 	  <dependencies>
 		  <group targetFramework=".NETStandard2.0">
         <dependency id="Newtonsoft.Json" version="11.0.2" />
-        <dependency id="ByteDev.Common" version="7.0.0" />
+        <dependency id="ByteDev.ResourceIdentifier" version="2.0.0" />
       </group>
 	  </dependencies>
   </metadata>

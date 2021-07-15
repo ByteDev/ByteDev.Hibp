@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using ByteDev.Hibp.Request;
 using NUnit.Framework;
@@ -9,9 +11,7 @@ namespace ByteDev.Hibp.IntTests
     [TestFixture]
     public class HibpClientTests
     {
-        private const string ApiKey = "a";
-
-        private const int TotalSiteBreaches = 369;       // As of 10/07/2019 there were 369 site breaches
+        private const int TotalSiteBreaches = 546;       // As of 15/07/2021
 
         private const string EmailAddressPwned = @"johnsmith@gmail.com";
         private const string EmailAddressNotPwned = @"djs834sskldi4999dspo@gmail.com";
@@ -27,12 +27,46 @@ namespace ByteDev.Hibp.IntTests
         [SetUp]
         public void SetUp()
         {
-            _sut = new HibpClient(new HttpClient(), ApiKey);
+            _sut = new HibpClient(new HttpClient(), ApiKeys.Valid);
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            // Throttling the API will result in response code error 429 returned.
+            Thread.Sleep(1500);
         }
 
         [TestFixture]
         public class GetAccountBreachesAsync : HibpClientTests
         {
+            [Test]
+            [Ignore("Run ad-hoc. Can affect other tests when run in set.")]
+            public async Task WhenRequestTooManyTimes_ThenThrowException()
+            {
+                try
+                {
+                    for (var i = 0; i < 5; i++)
+                    {
+                        Console.WriteLine("Request: " + i);
+                        await _sut.GetAccountBreachesAsync(EmailAddressNotPwned);
+                    }
+                }
+                catch (HibpClientException ex)
+                {
+                    StringAssert.StartsWith("Unhandled StatusCode: '429 TooManyRequests' returned.  Response body:\n'{ \"statusCode\": 429, \"message\": \"Rate limit is exceeded.", ex.Message);
+                }
+            }
+
+            [Test]
+            public void WhenApiKeyNotValid_ThenThrowException()
+            {
+                var sut = new HibpClient(new HttpClient(), ApiKeys.NotValid);
+
+                var ex = Assert.ThrowsAsync<HibpClientException>(() => sut.GetAccountBreachesAsync(EmailAddressNotPwned));
+                Assert.That(ex.Message, Is.EqualTo("Unhandled StatusCode: '401 Unauthorized' returned.  Response body:\n'{ \"statusCode\": 401, \"message\": \"Access denied due to invalid hibp-api-key.\" }'."));
+            }
+
             [Test]
             public async Task WhenEmailAddressNotPwnd_ThenReturnsHasNotBeenPwned()
             {
@@ -40,28 +74,43 @@ namespace ByteDev.Hibp.IntTests
 
                 Assert.That(result, Is.Empty);
             }
-
-            [Test]
-            public async Task WhenEmailAddressPwnd_ThenReturnsHasBeenPwned()
-            {
-                var result = await _sut.GetAccountBreachesAsync(EmailAddressPwned);
-
-                Assert.That(result.Count(), Is.GreaterThan(0));
-            }
-
+            
             [Test]
             public async Task WhenEmailAddressPwned_AndTruncateResponse_ThenReturnsOnlyBreachNames()
             {
-                var result = await _sut.GetAccountBreachesAsync(EmailAddressPwned, new HibpRequestOptions { TruncateResponse = true});
+                var result = await _sut.GetAccountBreachesAsync(EmailAddressPwned, new HibpRequestOptions
+                {
+                    TruncateResponse = true
+                });
 
-                Assert.That(result.Count(), Is.GreaterThan(0));
                 Assert.That(result.First().Name.Length, Is.GreaterThan(0));
+                // All other properties are set to default (truncated).
+            }
+
+            [Test]
+            public async Task WhenEmailAddressPwned_AndNotTruncateResponse_ThenReturnsAllDetails()
+            {
+                var result = await _sut.GetAccountBreachesAsync(EmailAddressPwned, new HibpRequestOptions
+                {
+                    TruncateResponse = false
+                });
+                
+                var first = result.First();
+                    
+                Assert.That(first.Domain.Length, Is.GreaterThan(0));
+                Assert.That(first.Description.Length, Is.GreaterThan(0));
+                Assert.That(first.Title.Length, Is.GreaterThan(0));
+                Assert.That(first.Name.Length, Is.GreaterThan(0));
+                Assert.That(first.PwnCount, Is.GreaterThan(0));
             }
 
             [Test]
             public async Task WhenEmailAddressPwned_AndIncludeUnverified_ThenReturnUnverifiedAsWell()
             {
-                var result = await _sut.GetAccountBreachesAsync(EmailAddressPwned, new HibpRequestOptions { IncludeUnverified = true });
+                var result = await _sut.GetAccountBreachesAsync(EmailAddressPwned, new HibpRequestOptions
+                {
+                    IncludeUnverified = true
+                });
 
                 Assert.That(result.Count(), Is.GreaterThan(0));
             }
@@ -69,7 +118,11 @@ namespace ByteDev.Hibp.IntTests
             [Test]
             public async Task WhenEmailAddressPwned_AndFilterByDomain_ThenReturnOnlyDomainBreach()
             {
-                var result = await _sut.GetAccountBreachesAsync(EmailAddressPwned, new HibpRequestOptions { FilterByDomain = DomainBreached });
+                var result = await _sut.GetAccountBreachesAsync(EmailAddressPwned, new HibpRequestOptions
+                {
+                    FilterByDomain = DomainBreached,
+                    TruncateResponse = false
+                });
 
                 Assert.That(result.Single().Domain, Is.EqualTo(DomainBreached));
             }
