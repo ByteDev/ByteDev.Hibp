@@ -9,49 +9,51 @@ namespace ByteDev.Hibp
     public interface IHibpClient
     {
         /// <summary>
-        /// Returns a list of all breaches a particular account has been involved in.
+        /// Get all breaches an account has been involved in.
         /// </summary>
-        /// <param name="emailAddress">Account email address to filter on.</param>
-        /// <param name="options">Request options.</param>
+        /// <param name="emailAddress">Email address for the account.</param>
+        /// <param name="options">Search options.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Returned breaches.</returns>
+        /// <returns>The task object representing the asynchronous operation with a result of the breaches.</returns>
+        /// <exception cref="T:System.ArgumentException"><paramref name="emailAddress" /> is null or empty.</exception>
+        /// <exception cref="T:ByteDev.Hibp.HibpClientException">Unhandled API error occured.</exception>
         Task<IEnumerable<HibpBreachResponse>> GetAccountBreachesAsync(string emailAddress, HibpRequestOptions options = null, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Returns the details of each of breach in the system.
-        /// (A "breach" is an instance of a system having been compromised by an attacker and the data disclosed).
+        /// Get all breached sites in the system.
         /// </summary>
-        /// <param name="domain">Filters the result set to only breaches against the domain specified. It is possible that one site (and consequently domain), is compromised on multiple occasions.</param>
+        /// <param name="domain">Optional. Filters the result set to only breaches against the domain specified. It is possible that one site (and consequently domain), is compromised on multiple occasions.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Returned breaches.</returns>
+        /// <returns>The task object representing the asynchronous operation with a result of the breaches.</returns>
+        /// <exception cref="T:ByteDev.Hibp.HibpClientException">Unhandled API error occured.</exception>
         Task<IEnumerable<HibpBreachResponse>> GetBreachedSitesAsync(string domain = null, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Retrieve a single breach by the breach "breachName".
-        /// This is the stable value which may or may not be the same as the breach "title" (which can change).
+        /// Get a single breached site by the breach name.
         /// </summary>
-        /// <param name="breachName">Breach breachName to filter on.</param>
+        /// <param name="breachName">Breach name. This is the stable value which may or may not be the same as the breach "title".</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Returned breach.</returns>
+        /// <returns>The task object representing the asynchronous operation with a result of the breach.</returns>
+        /// <exception cref="T:System.ArgumentException"><paramref name="breachName" /> is null or empty.</exception>
+        /// <exception cref="T:ByteDev.Hibp.HibpClientException">Unhandled API error occured.</exception>
         Task<HibpBreachResponse> GetBreachSiteByNameAsync(string breachName, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Retrieve all data classes. A data class is an attribute of a record compromised in a breach.
-        /// For example, many breaches expose data classes such as "Email addresses" and "Passwords".
-        /// The values returned by this service are ordered alphabetically in a string array and will expand over time as
-        /// new breaches expose previously unseen classes of data.
+        /// Get all data classes in the system.
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Returned data classes.</returns>
+        /// <returns>The task object representing the asynchronous operation with a result of data classes.</returns>
+        /// <exception cref="T:ByteDev.Hibp.HibpClientException">Unhandled API error occured.</exception>
         Task<IEnumerable<string>> GetDataClassesAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Retrieves all pastes for an account. Unlike searching for breaches, usernames that are not email addresses
-        /// cannot be searched for.
+        /// Get all pastes for an account.
         /// </summary>
-        /// <param name="emailAddress">Account email address to filter on.</param>
+        /// <param name="emailAddress">Email address for the account.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Returned account's pastes.</returns>
+        /// <returns>The task object representing the asynchronous operation with a result of pastes.</returns>
+        /// <exception cref="T:System.ArgumentException"><paramref name="emailAddress" /> is null or empty.</exception>
+        /// <exception cref="T:ByteDev.Hibp.HibpClientException">Unhandled API error occured.</exception>
         Task<IEnumerable<HibpPasteResponse>> GetAccountPastesAsync(string emailAddress, CancellationToken cancellationToken = default);
     }
 }
