@@ -9,7 +9,7 @@ Breaking changes:
 - Renamed namespace `ByteDev.Hibp.Response` to `ByteDev.Hibp.Contract.Response`.
 
 New features:
-- (None)
+- `HibpClient` constructor takes optional `HibpClientOptions` which allows client to automatically handle `429 Too many requests` style responses from the API if desired.
 
 Bug fixes / internal changes:
 - Removed package dependency `ByteDev.Common`.

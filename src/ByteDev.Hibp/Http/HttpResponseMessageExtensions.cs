@@ -12,5 +12,10 @@ namespace ByteDev.Hibp.Http
 
             return JsonConvert.DeserializeObject<T>(json);
         }
+
+        public static bool IsRateLimitedExceeded(this HttpResponseMessage source)
+        {
+            return (int)source.StatusCode == 429;
+        }
     }
 }

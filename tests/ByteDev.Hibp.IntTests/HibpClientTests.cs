@@ -1,7 +1,5 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 using ByteDev.Hibp.Contract.Request;
 using NUnit.Framework;
@@ -12,10 +10,7 @@ namespace ByteDev.Hibp.IntTests
     public class HibpClientTests
     {
         private const int TotalSiteBreaches = 546;       // As of 15/07/2021
-
-        private const string EmailAddressPwned = @"johnsmith@gmail.com";
-        private const string EmailAddressNotPwned = @"djs834sskldi4999dspo@gmail.com";
-
+        
         private const string DomainBreached = "apollo.io";
         private const string DomainNotBreached = "google.com";
 
@@ -23,33 +18,45 @@ namespace ByteDev.Hibp.IntTests
         private const string BreachNameDoesNotExists = "breachDoesNotExist";
 
         private IHibpClient _sut;
+        private HibpClientOptions _options;
 
         [SetUp]
         public void SetUp()
         {
-            _sut = new HibpClient(new HttpClient(), ApiKeys.Valid);
-        }
+            _options = new HibpClientOptions
+            {
+                RetryOnRateLimitExceeded = true
+            };
 
-        [TearDown]
-        public void TearDown()
-        {
-            // Throttling the API will result in response code error 429 returned.
-            Thread.Sleep(1500);
+            _sut = new HibpClient(new HttpClient(), ApiKeys.Valid, _options);
         }
 
         [TestFixture]
         public class GetAccountBreachesAsync : HibpClientTests
         {
             [Test]
-            [Ignore("Run ad-hoc. Can affect other tests when run in set.")]
-            public async Task WhenRequestTooManyTimes_ThenThrowException()
+            public async Task WhenRateLimitExceeded_AndRetryEnabled_ThenWaitAndGetResponse()
             {
+                _options.RetryOnRateLimitExceeded = true;
+
+                for (var i = 0; i < 5; i++)
+                {
+                    var result = await _sut.GetAccountBreachesAsync(EmailAddresses.NotPwned);
+
+                    Assert.That(result, Is.Empty);
+                }
+            }
+
+            [Test]
+            public async Task WhenRateLimitExceeded_AndRetryDisabled_ThenThrowException()
+            {
+                _options.RetryOnRateLimitExceeded = false;
+
                 try
                 {
                     for (var i = 0; i < 5; i++)
                     {
-                        Console.WriteLine("Request: " + i);
-                        await _sut.GetAccountBreachesAsync(EmailAddressNotPwned);
+                        await _sut.GetAccountBreachesAsync(EmailAddresses.NotPwned);
                     }
                 }
                 catch (HibpClientException ex)
@@ -63,14 +70,14 @@ namespace ByteDev.Hibp.IntTests
             {
                 var sut = new HibpClient(new HttpClient(), ApiKeys.NotValid);
 
-                var ex = Assert.ThrowsAsync<HibpClientException>(() => sut.GetAccountBreachesAsync(EmailAddressNotPwned));
+                var ex = Assert.ThrowsAsync<HibpClientException>(() => sut.GetAccountBreachesAsync(EmailAddresses.NotPwned));
                 Assert.That(ex.Message, Is.EqualTo("Unhandled StatusCode: '401 Unauthorized' returned.  Response body:\n'{ \"statusCode\": 401, \"message\": \"Access denied due to invalid hibp-api-key.\" }'."));
             }
 
             [Test]
             public async Task WhenEmailAddressNotPwnd_ThenReturnsHasNotBeenPwned()
             {
-                var result = await _sut.GetAccountBreachesAsync(EmailAddressNotPwned);
+                var result = await _sut.GetAccountBreachesAsync(EmailAddresses.NotPwned);
 
                 Assert.That(result, Is.Empty);
             }
@@ -78,7 +85,7 @@ namespace ByteDev.Hibp.IntTests
             [Test]
             public async Task WhenEmailAddressPwned_AndTruncateResponse_ThenReturnsOnlyBreachNames()
             {
-                var result = await _sut.GetAccountBreachesAsync(EmailAddressPwned, new HibpRequestOptions
+                var result = await _sut.GetAccountBreachesAsync(EmailAddresses.Pwned, new HibpRequestOptions
                 {
                     TruncateResponse = true
                 });
@@ -90,7 +97,7 @@ namespace ByteDev.Hibp.IntTests
             [Test]
             public async Task WhenEmailAddressPwned_AndNotTruncateResponse_ThenReturnsAllDetails()
             {
-                var result = await _sut.GetAccountBreachesAsync(EmailAddressPwned, new HibpRequestOptions
+                var result = await _sut.GetAccountBreachesAsync(EmailAddresses.Pwned, new HibpRequestOptions
                 {
                     TruncateResponse = false
                 });
@@ -107,7 +114,7 @@ namespace ByteDev.Hibp.IntTests
             [Test]
             public async Task WhenEmailAddressPwned_AndIncludeUnverified_ThenReturnUnverifiedAsWell()
             {
-                var result = await _sut.GetAccountBreachesAsync(EmailAddressPwned, new HibpRequestOptions
+                var result = await _sut.GetAccountBreachesAsync(EmailAddresses.Pwned, new HibpRequestOptions
                 {
                     IncludeUnverified = true
                 });
@@ -118,7 +125,7 @@ namespace ByteDev.Hibp.IntTests
             [Test]
             public async Task WhenEmailAddressPwned_AndFilterByDomain_ThenReturnOnlyDomainBreach()
             {
-                var result = await _sut.GetAccountBreachesAsync(EmailAddressPwned, new HibpRequestOptions
+                var result = await _sut.GetAccountBreachesAsync(EmailAddresses.Pwned, new HibpRequestOptions
                 {
                     FilterByDomain = DomainBreached,
                     TruncateResponse = false
@@ -194,7 +201,7 @@ namespace ByteDev.Hibp.IntTests
             [Test]
             public async Task WhenEmailAddressAccountExists_ThenReturnPastes()
             {
-                var result = await _sut.GetAccountPastesAsync(EmailAddressPwned);
+                var result = await _sut.GetAccountPastesAsync(EmailAddresses.Pwned);
 
                 Assert.That(result.Count(), Is.GreaterThan(0));
             }
@@ -202,7 +209,7 @@ namespace ByteDev.Hibp.IntTests
             [Test]
             public async Task WhenEmailAddressAccountDoesNotExists_ThenReturnEmpty()
             {
-                var result = await _sut.GetAccountPastesAsync(EmailAddressNotPwned);
+                var result = await _sut.GetAccountPastesAsync(EmailAddresses.NotPwned);
 
                 Assert.That(result, Is.Empty);
             }
