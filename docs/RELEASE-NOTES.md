@@ -1,6 +1,6 @@
 # Release Notes
 
-## 4.0.0 - ?
+## 4.0.0 - 15 July 2021
 
 Breaking changes:
 - Fixed `TruncateResponse` option so inline with API default (now true by default).
@@ -21,7 +21,7 @@ Bug fixes / internal changes:
 ## 3.0.0 - 24 July 2020
 
 Breaking changes:
-- Changes for v3 of the API
+- Changes for v3 of the API.
 
 New features:
 - (None)
