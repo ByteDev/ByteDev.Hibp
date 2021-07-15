@@ -25,10 +25,11 @@ namespace ByteDev.Hibp.IntTests
         {
             _options = new HibpClientOptions
             {
+                ApiKey = ApiKeys.Valid,
                 RetryOnRateLimitExceeded = true
             };
 
-            _sut = new HibpClient(new HttpClient(), ApiKeys.Valid, _options);
+            _sut = new HibpClient(new HttpClient(), _options);
         }
 
         [TestFixture]
@@ -68,9 +69,9 @@ namespace ByteDev.Hibp.IntTests
             [Test]
             public void WhenApiKeyNotValid_ThenThrowException()
             {
-                var sut = new HibpClient(new HttpClient(), ApiKeys.NotValid);
+                _options.ApiKey = ApiKeys.NotValid;
 
-                var ex = Assert.ThrowsAsync<HibpClientException>(() => sut.GetAccountBreachesAsync(EmailAddresses.NotPwned));
+                var ex = Assert.ThrowsAsync<HibpClientException>(() => _sut.GetAccountBreachesAsync(EmailAddresses.NotPwned));
                 Assert.That(ex.Message, Is.EqualTo("Unhandled StatusCode: '401 Unauthorized' returned.  Response body:\n'{ \"statusCode\": 401, \"message\": \"Access denied due to invalid hibp-api-key.\" }'."));
             }
 

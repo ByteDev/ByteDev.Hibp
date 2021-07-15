@@ -12,7 +12,7 @@ namespace ByteDev.Hibp.UnitTests
             [Test]
             public void WhenHttpClientIsNull_ThenThrowException()
             {
-                Assert.Throws<ArgumentNullException>(() => _ = new HibpClient(null, "apiKey"));
+                Assert.Throws<ArgumentNullException>(() => _ = new HibpClient(null));
             }
         }
     }

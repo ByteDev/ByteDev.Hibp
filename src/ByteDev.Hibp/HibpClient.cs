@@ -16,15 +16,13 @@ namespace ByteDev.Hibp
     {
         private readonly HttpClient _httpClient;
         private readonly HibpClientOptions _options;
-        private readonly HttpRequestMessageFactory _requestFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:ByteDev.Hibp.HibpClient" /> class.
         /// </summary>
         /// <param name="httpClient">HttpClient to use in all requests to the API.</param>
-        /// <param name="apiKey">Authorization key for the API.</param>
         /// <exception cref="T:System.ArgumentNullException"><paramref name="httpClient" /> is null.</exception>
-        public HibpClient(HttpClient httpClient, string apiKey) : this (httpClient, apiKey, null)
+        public HibpClient(HttpClient httpClient) : this (httpClient, null)
         {
         }
 
@@ -32,15 +30,12 @@ namespace ByteDev.Hibp
         /// Initializes a new instance of the <see cref="T:ByteDev.Hibp.HibpClient" /> class.
         /// </summary>
         /// <param name="httpClient">HttpClient to use in all requests to the API.</param>
-        /// <param name="apiKey">Authorization key for the API.</param>
         /// <param name="options">Additional settings for the HIBP client.</param>
         /// <exception cref="T:System.ArgumentNullException"><paramref name="httpClient" /> is null.</exception>
-        public HibpClient(HttpClient httpClient, string apiKey, HibpClientOptions options)
+        public HibpClient(HttpClient httpClient, HibpClientOptions options)
         {
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
             _options = options ?? new HibpClientOptions();
-
-            _requestFactory = new HttpRequestMessageFactory(apiKey);
         }
 
         /// <summary>
@@ -56,13 +51,13 @@ namespace ByteDev.Hibp
         {
             var uri = HibpUriFactory.CreateBreachedAccountUri(emailAddress, options);
 
-            var response = await ApiGetAsync(uri, cancellationToken);
+            var response = await _httpClient.ApiGetAsync(uri, _options, cancellationToken);
 
             return await HibpResponseFactory.CreateBreachResponsesAsync(response);
         }
 
         /// <summary>
-        /// Get all breached sites in the system.
+        /// Get all breached sites in the system. Requires that a client API key be provided.
         /// </summary>
         /// <param name="domain">Optional. Filters the result set to only breaches against the domain specified. It is possible that one site (and consequently domain), is compromised on multiple occasions.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -72,7 +67,7 @@ namespace ByteDev.Hibp
         {
             var uri = HibpUriFactory.CreateBreachedSiteUri(domain);
 
-            var response = await ApiGetAsync(uri, cancellationToken);
+            var response = await _httpClient.ApiGetAsync(uri, _options, cancellationToken);
 
             return await HibpResponseFactory.CreateBreachResponsesAsync(response);
         }
@@ -89,7 +84,7 @@ namespace ByteDev.Hibp
         {
             var uri = HibpUriFactory.CreateBreachSiteByNameUri(breachName);
 
-            var response = await ApiGetAsync(uri, cancellationToken);
+            var response = await _httpClient.ApiGetAsync(uri, _options, cancellationToken);
 
             return await HibpResponseFactory.CreateBreachResponseAsync(response);
         }
@@ -104,13 +99,13 @@ namespace ByteDev.Hibp
         {
             var uri = HibpUriFactory.CreateDataClassesUri();
 
-            var response = await ApiGetAsync(uri, cancellationToken);
+            var response = await _httpClient.ApiGetAsync(uri, _options, cancellationToken);
 
             return await HibpResponseFactory.CreateDataClassesAsync(response);
         }
 
         /// <summary>
-        /// Get all pastes for an account.
+        /// Get all pastes for an account. Requires that a client API key be provided.
         /// </summary>
         /// <param name="emailAddress">Email address for the account.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -121,27 +116,9 @@ namespace ByteDev.Hibp
         {
             var uri = HibpUriFactory.CreateAccountPastesUri(emailAddress);
 
-            var response = await ApiGetAsync(uri, cancellationToken);
+            var response = await _httpClient.ApiGetAsync(uri, _options, cancellationToken);
 
             return await HibpResponseFactory.CreatePasteResponsesAsync(response);
-        }
-
-        private async Task<HttpResponseMessage> ApiGetAsync(Uri uri, CancellationToken cancellationToken)
-        {
-            var response = await _httpClient.SendAsync(_requestFactory.CreateGet(uri), cancellationToken);
-
-            if (_options.RetryOnRateLimitExceeded && response.IsRateLimitedExceeded())
-            {
-                var rateLimitResponse = await response.DeserializeAsync<ApiRateLimitExceededResponse>();
-
-                var seconds = rateLimitResponse.GetRetrySeconds();
-                
-                await Task.Delay(TimeSpan.FromSeconds(seconds), cancellationToken);
-
-                response = await _httpClient.SendAsync(_requestFactory.CreateGet(uri), cancellationToken);
-            }
-
-            return response;
         }
     }
 }

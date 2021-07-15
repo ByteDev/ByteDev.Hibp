@@ -7,9 +7,12 @@ Breaking changes:
 - Fixed `IncludeUnverified` option so inline with API default (now true by default).
 - Renamed namespace `ByteDev.Hibp.Request` to `ByteDev.Hibp.Contract.Request`.
 - Renamed namespace `ByteDev.Hibp.Response` to `ByteDev.Hibp.Contract.Response`.
+- Removed API key string param from `HibpClient` constructor (now provided through `HibpClientOptions` param).
 
 New features:
-- `HibpClient` constructor takes optional `HibpClientOptions` which allows client to automatically handle `429 Too many requests` style responses from the API if desired.
+- `HibpClient` constructor takes optional `HibpClientOptions` which:
+  - Allows consume to set optional API key.
+  - Allows consumer to instruct client to automatically handle `429 Too many requests` style responses from the API if desired.
 
 Bug fixes / internal changes:
 - Removed package dependency `ByteDev.Common`.

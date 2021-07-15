@@ -20,26 +20,41 @@ Further details can be found on the [nuget page](https://www.nuget.org/packages/
 
 The `HibpClient` class currently has a number of public methods:
 
-- **GetAccountBreachesAsync(string emailAddress, HibpRequestOptions options = null)**
-- **GetBreachedSitesAsync(string domain = null)**
-- **GetBreachSiteByNameAsync(string breachName)**
-- **GetDataClassesAsync()**
-- **GetAccountPastesAsync(string emailAddress)**
+- `GetAccountBreachesAsync(string emailAddress, HibpRequestOptions options = null)`
+- `GetBreachedSitesAsync(string domain = null)`
+- `GetBreachSiteByNameAsync(string breachName)`
+- `GetDataClassesAsync()`
+- `GetAccountPastesAsync(string emailAddress)`
+
+**Note:** Methods `GetAccountBreachesAsync` and `GetAccountPastesAsync` require a valid API key be provided (via the `HibpClient` constructor).
 
 ### Example
 
 ```csharp
-// Valid API key is required for methods: 
-// - GetAccountBreachesAsync
-// - GetAccountPastesAsync
-const string apiKey = "someKey";
+var options = new HibpClientOptions
+{
+    ApiKey = "someApiKey",
+    RetryOnRateLimitExceeded = true
+};
 
-IHibpClient client = new HibpClient(new HttpClient(), apiKey);
+IHibpClient client = new HibpClient(new HttpClient(), options);
 
 var result = await client.GetAccountBreachesAsync("johnsmith@gmail.com");
 
 Console.WriteLine($"Number of breaches: {result.Count()}");
 ```
+
+## Glossary
+
+**Account** = Represented by an email address.
+
+**Breach** = An instance of a system having been compromised by an attacker and the data disclosed.
+
+**Data Class** = An attribute of a record compromised in a breach.
+For example, many breaches expose data classes such as "Email addresses" and "Passwords".
+A complete list of all data classes can be obtained by calling the `GetDataClassesAsync` method.
+		
+**Pastes** = Text pasted onto a website whereupon it receives its own unique URL so that it can then be shared with others who may want to view the paste.
 
 ## Further Information
 
