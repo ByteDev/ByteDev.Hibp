@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using ByteDev.Hibp.Contract.Request;
+using ByteDev.Hibp.Contract.Response;
 using ByteDev.Hibp.Http;
-using ByteDev.Hibp.Request;
-using ByteDev.Hibp.Response;
 
 namespace ByteDev.Hibp
 {
@@ -21,9 +22,10 @@ namespace ByteDev.Hibp
         /// </summary>
         /// <param name="httpClient">HttpClient to use in all requests to the API.</param>
         /// <param name="apiKey">Authorization key for the API.</param>
+        /// <exception cref="T:System.ArgumentNullException"><paramref name="httpClient" /> is null.</exception>
         public HibpClient(HttpClient httpClient, string apiKey)
         {
-            _httpClient = httpClient;
+            _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
 
             _requestFactory = new HttpRequestMessageFactory(apiKey);
         }
@@ -39,7 +41,7 @@ namespace ByteDev.Hibp
         /// <exception cref="T:ByteDev.Hibp.HibpClientException">Unhandled API error occured.</exception>
         public async Task<IEnumerable<HibpBreachResponse>> GetAccountBreachesAsync(string emailAddress, HibpRequestOptions options = null, CancellationToken cancellationToken = default)
         {
-            var uri = HibpUriFactory.CreateBreachedAccountUri(emailAddress, options);   
+            var uri = HibpUriFactory.CreateBreachedAccountUri(emailAddress, options);
 
             var request = _requestFactory.CreateGet(uri);
 

@@ -3,7 +3,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using ByteDev.Hibp.Request;
+using ByteDev.Hibp.Contract.Request;
 using NUnit.Framework;
 
 namespace ByteDev.Hibp.IntTests

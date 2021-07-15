@@ -5,6 +5,8 @@
 Breaking changes:
 - Fixed `TruncateResponse` option so inline with API default (now true by default).
 - Fixed `IncludeUnverified` option so inline with API default (now true by default).
+- Renamed namespace `ByteDev.Hibp.Request` to `ByteDev.Hibp.Contract.Request`.
+- Renamed namespace `ByteDev.Hibp.Response` to `ByteDev.Hibp.Contract.Response`.
 
 New features:
 - (None)

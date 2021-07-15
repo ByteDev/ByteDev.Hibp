@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using ByteDev.Hibp.Request;
-using ByteDev.Hibp.Response;
+using ByteDev.Hibp.Contract.Request;
+using ByteDev.Hibp.Contract.Response;
 
 namespace ByteDev.Hibp
 {

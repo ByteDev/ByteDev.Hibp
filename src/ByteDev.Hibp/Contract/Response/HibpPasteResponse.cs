@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ByteDev.Hibp.Response
+namespace ByteDev.Hibp.Contract.Response
 {
     public class HibpPasteResponse
     {

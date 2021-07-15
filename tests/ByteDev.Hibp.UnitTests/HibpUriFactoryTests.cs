@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Net;
-using ByteDev.Hibp.Request;
+using ByteDev.Hibp.Contract.Request;
 using NUnit.Framework;
 
 namespace ByteDev.Hibp.UnitTests

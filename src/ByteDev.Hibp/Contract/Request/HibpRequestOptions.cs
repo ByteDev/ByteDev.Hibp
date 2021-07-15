@@ -1,4 +1,4 @@
-﻿namespace ByteDev.Hibp.Request
+﻿namespace ByteDev.Hibp.Contract.Request
 {
     /// <summary>
     /// Represents request options to the HIBP API.
