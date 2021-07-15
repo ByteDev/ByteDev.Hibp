@@ -14,6 +14,7 @@ namespace ByteDev.Hibp
     public class HibpClient : IHibpClient
     {
         private readonly HttpClient _httpClient;
+        private readonly HttpRequestMessageFactory _requestFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:ByteDev.Hibp.HibpClient" /> class.
@@ -23,10 +24,8 @@ namespace ByteDev.Hibp
         public HibpClient(HttpClient httpClient, string apiKey)
         {
             _httpClient = httpClient;
-            
-            _httpClient.AddApiKeyHeader(apiKey);
-            _httpClient.AddRequestHeaderUserAgent();
-            _httpClient.AddRequestHeaderContentNegotiation();
+
+            _requestFactory = new HttpRequestMessageFactory(apiKey);
         }
 
         /// <summary>
@@ -42,7 +41,9 @@ namespace ByteDev.Hibp
         {
             var uri = HibpUriFactory.CreateBreachedAccountUri(emailAddress, options);   
 
-            var response = await _httpClient.GetAsync(uri, cancellationToken);
+            var request = _requestFactory.CreateGet(uri);
+
+            var response = await _httpClient.SendAsync(request, cancellationToken);
 
             return await HibpResponseFactory.CreateBreachResponsesAsync(response);
         }
@@ -58,7 +59,9 @@ namespace ByteDev.Hibp
         {
             var uri = HibpUriFactory.CreateBreachedSiteUri(domain);
 
-            var response = await _httpClient.GetAsync(uri, cancellationToken);
+            var request = _requestFactory.CreateGet(uri);
+
+            var response = await _httpClient.SendAsync(request, cancellationToken);
 
             return await HibpResponseFactory.CreateBreachResponsesAsync(response);
         }
@@ -75,7 +78,9 @@ namespace ByteDev.Hibp
         {
             var uri = HibpUriFactory.CreateBreachSiteByNameUri(breachName);
 
-            var response = await _httpClient.GetAsync(uri, cancellationToken);
+            var request = _requestFactory.CreateGet(uri);
+
+            var response = await _httpClient.SendAsync(request, cancellationToken);
 
             return await HibpResponseFactory.CreateBreachResponseAsync(response);
         }
@@ -90,7 +95,9 @@ namespace ByteDev.Hibp
         {
             var uri = HibpUriFactory.CreateDataClassesUri();
 
-            var response = await _httpClient.GetAsync(uri, cancellationToken);
+            var request = _requestFactory.CreateGet(uri);
+
+            var response = await _httpClient.SendAsync(request, cancellationToken);
 
             return await HibpResponseFactory.CreateDataClassesAsync(response);
         }
@@ -107,7 +114,9 @@ namespace ByteDev.Hibp
         {
             var uri = HibpUriFactory.CreateAccountPastesUri(emailAddress);
 
-            var response = await _httpClient.GetAsync(uri, cancellationToken);
+            var request = _requestFactory.CreateGet(uri);
+
+            var response = await _httpClient.SendAsync(request, cancellationToken);
 
             return await HibpResponseFactory.CreatePasteResponsesAsync(response);
         }
