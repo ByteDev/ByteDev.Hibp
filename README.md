@@ -16,6 +16,12 @@ ByteDev.Hibp is hosted as a package on nuget.org.  To install from the Package M
 
 Further details can be found on the [nuget page](https://www.nuget.org/packages/ByteDev.Hibp/).
 
+## Release Notes
+
+Releases follow semantic versioning.
+
+Full details of the release notes can be viewed on [GitHub](https://github.com/ByteDev/ByteDev.Hibp/blob/master/docs/RELEASE-NOTES.md).
+
 ## Usage
 
 The `HibpClient` class currently has a number of public methods:
