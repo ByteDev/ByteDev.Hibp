@@ -32,7 +32,7 @@ The `HibpClient` class currently has a number of public methods:
 - `GetDataClassesAsync()`
 - `GetAccountPastesAsync(string emailAddress)`
 
-**Note:** Methods `GetAccountBreachesAsync` and `GetAccountPastesAsync` require a valid API key be provided (via the `HibpClient` constructor).
+**Note:** Methods `GetAccountBreachesAsync` and `GetAccountPastesAsync` require a valid API key be provided.
 
 ### Example
 

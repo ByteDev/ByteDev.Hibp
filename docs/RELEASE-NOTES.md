@@ -11,7 +11,7 @@ Breaking changes:
 
 New features:
 - `HibpClient` constructor takes optional `HibpClientOptions` which:
-  - Allows consume to set optional API key.
+  - Allows consumer to set optional API key.
   - Allows consumer to instruct client to automatically handle `429 Too many requests` style responses from the API if desired.
 
 Bug fixes / internal changes:
