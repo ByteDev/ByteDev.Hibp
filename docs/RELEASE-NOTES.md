@@ -1,5 +1,18 @@
 # Release Notes
 
+## 4.0.1 - 29 June 2022
+
+Breaking changes:
+- (None)
+
+New features:
+- (None)
+
+Bug fixes / internal changes:
+- Updated package dependencies:
+  - ByteDev.ResourceIdentifier 2.2.0
+  - Newtonsoft.Json 13.0.1
+
 ## 4.0.0 - 15 July 2021
 
 Breaking changes:
